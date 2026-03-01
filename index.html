@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Helix Pattern — AI That Thinks With You</title>
+<meta name="description" content="What if AI could think the way you think? The Helix Pattern encodes expert methodology into thinking agents that reason alongside you.">
+<meta property="og:title" content="The Helix Pattern — AI That Thinks With You">
+<meta property="og:description" content="Not automation. Augmentation. A thinking partner that understands your approach.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thehelixpattern.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #08080f;
+    --navy: #0d0d1f;
+    --panel: #111128;
+    --teal: #00c2a8;
+    --teal-dim: #007a6a;
+    --coral: #ff5a5f;
+    --amber: #ffb347;
+    --white: #f0f0f0;
+    --muted: #6b6b8a;
+    --border: #1e1e3a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── CANVAS ── */
+  #canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(8,8,15,0.95), transparent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s;
+  }
+
+  nav.scrolled { border-color: var(--border); }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-cta {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    text-decoration: none;
+    border: 1px solid var(--teal-dim);
+    padding: 0.5rem 1.25rem;
+    transition: all 0.3s;
+  }
+  .nav-cta:hover {
+    background: var(--teal);
+    color: var(--black);
+  }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 6rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.5s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    line-height: 1.8;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.7s;
+  }
+
+  .hero-sub strong {
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.9s;
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--black);
+    padding: 0.9rem 2.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #00e0c4; transform: translateY(-2px); }
+
+  .btn-ghost {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--white); border-color: var(--muted); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 4rem;
+    width: calc(100% - 8rem);
+  }
+
+  /* ── PROBLEM ── */
+  .problem {
+    padding: 8rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .problem-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .problem-body {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  .problem-body p { margin-bottom: 1rem; }
+
+  .problem-body strong {
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .problem-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tried-item {
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .tried-item:hover { border-color: var(--teal-dim); }
+
+  .tried-item::before {
+    content: attr(data-n);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .tried-item .tried-title {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+
+  .tried-item .tried-result {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .tried-item.missing {
+    border-color: var(--coral);
+    background: rgba(255,90,95,0.04);
+  }
+
+  .tried-item.missing .tried-title { color: var(--coral); }
+
+  /* ── TRINITY ── */
+  .trinity {
+    padding: 8rem 4rem;
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .trinity-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .trinity-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.2;
+    color: var(--white);
+    margin-bottom: 3rem;
+    max-width: 800px;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .trinity-quote::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.2em; bottom: 0.2em;
+    width: 3px;
+    background: var(--coral);
+  }
+
+  .trinity-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .trinity-text {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  .trinity-text p { margin-bottom: 1rem; }
+
+  .trinity-text strong {
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .trinity-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .comp-col {
+    padding: 2rem 1.5rem;
+  }
+
+  .comp-col:first-child {
+    border-right: 1px solid var(--border);
+  }
+
+  .comp-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .comp-col:first-child .comp-label { color: var(--coral); }
+  .comp-col:last-child .comp-label { color: var(--teal); }
+
+  .comp-item {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .comp-item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+  }
+
+  .comp-col:last-child .comp-item::before { color: var(--teal-dim); }
+
+  /* ── TWO KINDS ── */
+  .two-kinds {
+    padding: 8rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .two-kinds-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 5rem;
+  }
+
+  .two-kinds-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+  }
+
+  .two-kinds-sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    padding-top: 0.5rem;
+  }
+
+  .two-kinds-sub strong { color: var(--white); font-weight: 400; }
+
+  .agents-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+  }
+
+  .agent-cell {
+    background: var(--black);
+    padding: 2.5rem 2rem;
+  }
+
+  .agent-cell.header {
+    background: var(--panel);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .agent-cell.header .agent-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .agent-cell.header:first-child .agent-type { color: var(--muted); }
+  .agent-cell.header:last-child .agent-type { color: var(--teal); }
+
+  .agent-row-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .agent-value {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .agent-cell.thinking .agent-value { color: var(--teal); }
+
+  .agents-footer {
+    margin-top: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+
+  .agents-footer strong { color: var(--teal); font-style: normal; font-weight: 400; }
+
+  /* ── WHO ── */
+  .who {
+    padding: 8rem 4rem;
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .who-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .who-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .who-body { color: var(--muted); font-size: 0.95rem; line-height: 1.9; }
+
+  .who-body p { margin-bottom: 1.5rem; }
+
+  .who-body strong { color: var(--white); font-weight: 400; }
+
+  .who-list {
+    list-style: none;
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .who-list li {
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background 0.3s;
+  }
+
+  .who-list li:last-child { border-bottom: none; }
+  .who-list li:hover { background: rgba(0, 194, 168, 0.04); }
+
+  .who-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--teal);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .value-statement {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--teal-dim);
+    background: rgba(0,194,168,0.04);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--white);
+  }
+
+  /* ── PROCESS ── */
+  .process {
+    padding: 8rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .process-header {
+    margin-bottom: 4rem;
+    max-width: 600px;
+  }
+
+  .process-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .process-sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+    transition: background 0.3s;
+    padding-left: 1rem;
+    cursor: default;
+  }
+
+  .step:first-child { border-top: 1px solid var(--border); }
+
+  .step:hover { background: rgba(0,194,168,0.03); }
+
+  .step-n {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    padding-top: 0.25rem;
+  }
+
+  .step-content {}
+
+  .step-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  .step-body {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── FOUNDER ── */
+  .founder {
+    padding: 8rem 4rem;
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+  }
+
+  .founder-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .founder-body {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  .founder-body p { margin-bottom: 1.25rem; }
+
+  .founder-body strong { color: var(--white); font-weight: 400; }
+
+  .founder-pull {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--white);
+    margin: 3rem 0;
+    padding-left: 2rem;
+    border-left: 2px solid var(--teal);
+  }
+
+  .founder-sig {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .founder-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--teal);
+  }
+
+  .founder-name {
+    font-size: 0.9rem;
+    color: var(--white);
+    margin-bottom: 0.15rem;
+  }
+
+  .founder-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 10rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,194,168,0.08) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .cta-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .cta-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .cta-sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 450px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+
+  .cta-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 560px;
+    margin: 0 auto 1rem;
+    text-align: left;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2px;
+  }
+
+  .form-field.full { grid-column: 1 / -1; }
+
+  .form-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cta-input {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 0.9rem 1.25rem;
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+  }
+
+  .cta-textarea {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 0.9rem 1.25rem;
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .cta-input::placeholder, .cta-textarea::placeholder { color: var(--muted); }
+  .cta-input:focus, .cta-textarea:focus { border-color: var(--teal-dim); }
+
+  .cta-submit {
+    background: var(--teal);
+    color: var(--black);
+    border: none;
+    padding: 0.9rem 1.75rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 2px;
+    width: 100%;
+  }
+  .cta-submit:hover { background: #00e0c4; }
+  .cta-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  .cta-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .cta-success {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    display: none;
+  }
+
+  /* ── RHYTHM ── */
+  .rhythm {
+    padding: 8rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .rhythm-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+    margin-bottom: 5rem;
+  }
+
+  .rhythm-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+  }
+
+  .rhythm-sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    padding-top: 0.5rem;
+  }
+
+  .rhythm-sub strong { color: var(--white); font-weight: 400; }
+
+  .ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 4rem;
+  }
+
+  .ladder-rung {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .ladder-rung:first-child { border-top: 1px solid var(--border); }
+
+  .ladder-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ladder-rung:nth-child(1) .ladder-label { color: var(--muted); }
+  .ladder-rung:nth-child(2) .ladder-label { color: var(--muted); }
+  .ladder-rung:nth-child(3) .ladder-label { color: var(--teal); }
+
+  .ladder-question {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .ladder-rung:nth-child(3) .ladder-question {
+    color: var(--white);
+  }
+
+  .ladder-rung:nth-child(3) {
+    background: rgba(0,194,168,0.03);
+    padding-left: 1rem;
+    margin-left: -1rem;
+    border-color: var(--teal-dim);
+  }
+
+  /* ── CASE STUDY ── */
+  .case-study {
+    padding: 8rem 4rem;
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .case-study-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .case-study-header {
+    margin-bottom: 3rem;
+  }
+
+  .case-study-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .case-study-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .comparison-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 2.5rem;
+  }
+
+  .comp-block-col {
+    background: var(--black);
+    padding: 2rem;
+  }
+
+  .comp-block-col:last-child {
+    background: var(--panel);
+  }
+
+  .comp-block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .comp-block-col:first-child .comp-block-label { color: var(--muted); }
+  .comp-block-col:last-child .comp-block-label { color: var(--teal); }
+
+  .comp-block-tag {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.6rem;
+    border: 1px solid currentColor;
+    opacity: 0.7;
+  }
+
+  .comp-block-content {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    border-left: 2px solid var(--border);
+    padding-left: 1rem;
+  }
+
+  .comp-block-col:last-child .comp-block-content {
+    border-left-color: var(--teal-dim);
+    color: var(--white);
+    opacity: 0.85;
+  }
+
+  .comp-block-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .comp-block-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+
+  .comp-block-note::before {
+    content: '·';
+    color: var(--border);
+    flex-shrink: 0;
+  }
+
+  .comp-block-col:last-child .comp-block-note::before { color: var(--teal-dim); }
+  .comp-block-col:last-child .comp-block-note { color: var(--white); opacity: 0.7; }
+
+  .case-punchline {
+    padding: 1.5rem 2rem;
+    border: 1px solid var(--teal-dim);
+    background: rgba(0,194,168,0.04);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .case-punchline strong {
+    font-style: normal;
+    color: var(--teal);
+    font-weight: 400;
+  }
+
+  .case-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .case-link:hover { color: var(--teal); border-color: var(--teal-dim); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2.5rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .footer-right a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-right a:hover { color: var(--teal); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .hero, .problem, .two-kinds, .process, .who-inner,
+    .trinity, .founder, .cta-section, .rhythm, .case-study { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .problem, .two-kinds-header, .trinity-body, .who-inner, .rhythm-header { grid-template-columns: 1fr; gap: 2.5rem; }
+    .trinity-comparison, .comparison-block { grid-template-columns: 1fr; }
+    .comp-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .agents-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .who-heading { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">The Helix Pattern</a>
+  <a href="#access" class="nav-cta">Request Access</a>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <p class="hero-eyebrow">A new way to build AI agents</p>
+    <h1 class="hero-title">
+      What if AI could<br>
+      think the way<br>
+      <em>you</em> think?
+    </h1>
+    <p class="hero-sub">
+      Not answer questions.<br>
+      Not follow instructions.<br>
+      <strong>Think with you.</strong>
+    </p>
+    <p class="hero-sub" style="margin-top:1.5rem;">
+      Prompt engineering → context engineering →<br>
+      <strong>rhythm engineering.</strong>
+    </p>
+    <div class="hero-actions">
+      <a href="#access" class="btn-primary">Build My Trinity</a>
+      <a href="#what" class="btn-ghost">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="what">
+  <div class="problem">
+    <div class="problem-left reveal">
+      <p class="section-label">The Problem</p>
+      <h2 class="problem-heading">You've tried everything.<br>Something's still missing.</h2>
+      <div class="problem-body">
+        <p>AI is powerful. It knows more than you. It's faster than you.</p>
+        <p>Yet it doesn't <em>think</em> like you.</p>
+        <p>It doesn't see problems the way you've learned to see them. It doesn't move through complexity the way years of practice taught you.</p>
+        <p><strong>It doesn't have your methodology.</strong></p>
+      </div>
+    </div>
+    <div class="problem-right reveal">
+      <div class="tried-item" data-n="01">
+        <div class="tried-title">Prompts</div>
+        <div class="tried-result">Better instructions. Still your methodology missing.</div>
+      </div>
+      <div class="tried-item" data-n="02">
+        <div class="tried-title">Context Engineering</div>
+        <div class="tried-result">Richer inputs. Richer output. Still not your way of thinking.</div>
+      </div>
+      <div class="tried-item" data-n="03">
+        <div class="tried-title">Task Agents</div>
+        <div class="tried-result">Great for execution. Not for complex reasoning.</div>
+      </div>
+      <div class="tried-item missing" data-n="??">
+        <div class="tried-title">Thinking with you</div>
+        <div class="tried-result">This is what's been missing. Until now.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRINITY -->
+<section>
+  <div class="trinity">
+    <div class="trinity-inner">
+      <blockquote class="trinity-quote reveal">
+        "I need a pilot program for a B-212 helicopter."
+      </blockquote>
+      <div class="trinity-body">
+        <div class="trinity-text reveal">
+          <p>Remember Trinity in The Matrix? She needs to fly a helicopter. She's never flown one.</p>
+          <p>In seconds, the knowledge uploads — and she doesn't just know the controls, she <strong>knows how to fly.</strong></p>
+          <p>Not step-by-step instructions. Not a manual. Something deeper.</p>
+          <p>The Helix Pattern works the same way. We don't give AI instructions to follow.</p>
+          <p>We encode <strong>how you think</strong> — your lenses, your methodology, your way of moving through problems — and AI reasons through it alongside you.</p>
+          <p>The result isn't automation. <strong>It's augmentation.</strong></p>
+          <p>That's why we call your thinking agent <strong>Trinity.</strong> You're not the helicopter. You're the pilot who just got the upload.</p>
+        </div>
+        <div class="trinity-comparison reveal">
+          <div class="comp-col">
+            <div class="comp-label">Step-by-Step</div>
+            <div class="comp-item">Follow procedure A</div>
+            <div class="comp-item">Then B. Then C.</div>
+            <div class="comp-item">Rigid autopilot</div>
+            <div class="comp-item">Generic output</div>
+            <div class="comp-item">Human delegates</div>
+          </div>
+          <div class="comp-col">
+            <div class="comp-label">Cognitive Upload</div>
+            <div class="comp-item">Receive the complete framework</div>
+            <div class="comp-item">Reason through it</div>
+            <div class="comp-item">Adaptive, context-aware</div>
+            <div class="comp-item">Novel synthesis</div>
+            <div class="comp-item">Human steers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RHYTHM ENGINEERING -->
+<section>
+  <div class="rhythm">
+    <div class="rhythm-header reveal">
+      <h2 class="rhythm-heading">A new rung on<br>the ladder.</h2>
+      <div class="rhythm-sub">
+        <p>Prompt and context engineering got us far. But they're still about <strong>what you give AI.</strong></p>
+        <p>Rhythm engineering is about <strong>how you think together.</strong></p>
+      </div>
+    </div>
+    <div class="ladder reveal">
+      <div class="ladder-rung">
+        <span class="ladder-label">Prompt Engineering</span>
+        <span class="ladder-question">"What do I ask?"</span>
+      </div>
+      <div class="ladder-rung">
+        <span class="ladder-label">Context Engineering</span>
+        <span class="ladder-question">"What do I give it?"</span>
+      </div>
+      <div class="ladder-rung">
+        <span class="ladder-label">Rhythm Engineering</span>
+        <span class="ladder-question">"How do we think together?"</span>
+      </div>
+    </div>
+    <div class="rhythm-sub reveal" style="max-width:600px;">
+      <p>Rhythm engineering switches cognitive modes — the same company, same context, same model — but tuned to a different frequency of intelligence. The result isn't better output. It's a different <em>kind</em> of thinking.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section>
+  <div class="case-study">
+    <div class="case-study-inner">
+      <div class="case-study-header reveal">
+        <p class="section-label">In Practice</p>
+        <h2 class="case-study-heading">Same company. Same model.<br>Different intelligence.</h2>
+        <p class="case-study-sub">Unilever. 10-year vision. Prompt engineering vs Rhythm engineering.</p>
+      </div>
+      <div class="comparison-block reveal">
+        <div class="comp-block-col">
+          <div class="comp-block-label">
+            Prompt Engineering
+            <span class="comp-block-tag">Standard</span>
+          </div>
+          <div class="comp-block-content">
+            "Unilever's 10-year AI-native vision involves integrating artificial intelligence across the value chain — from R&D to consumer engagement. By 2035, Unilever is expected to operate highly automated supply chains and predictive demand systems…"
+          </div>
+          <div class="comp-block-notes">
+            <div class="comp-block-note">Reads like a consultant memo</div>
+            <div class="comp-block-note">One narrative, linear, static</div>
+            <div class="comp-block-note">Good summary of expected shifts</div>
+          </div>
+        </div>
+        <div class="comp-block-col">
+          <div class="comp-block-label">
+            Rhythm Engineering — 20Hz
+            <span class="comp-block-tag">Helix Pattern</span>
+          </div>
+          <div class="comp-block-content">
+            "Four synchronized waves of transformation… Wave 1: Consumer Consciousness Acceleration (2025–27). Wave 2: Sustainability Pressure Intensification (2027–30). Wave 3: AI Transformation Synchronization (2030–33). Wave 4: Market Consolidation Spiral (2033–35)…"
+          </div>
+          <div class="comp-block-notes">
+            <div class="comp-block-note">Dynamic system waves, not a memo</div>
+            <div class="comp-block-note">Temporal sequencing with decision points</div>
+            <div class="comp-block-note">Living system dynamics, not static narrative</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-punchline reveal">
+        Same company, same context — but the <strong>20Hz dial</strong> unlocks a very different type of strategic intelligence.
+      </div>
+      <a href="https://www.thehelixloop.com/strategic-intelligence-as-code-rhythm/" target="_blank" class="case-link reveal">
+        Read the full case study — prompts, outputs, and comparisons →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TWO KINDS -->
+<section>
+  <div class="two-kinds">
+    <div class="two-kinds-header reveal">
+      <h2 class="two-kinds-heading">Two kinds of agents.<br>Very different purpose.</h2>
+      <div class="two-kinds-sub">
+        <p>The world is building <strong>task agents</strong> — agents that execute, follow workflows, automate.</p>
+        <p>Useful. But limited when expert judgment matters.</p>
+        <p>We're building something different.</p>
+      </div>
+    </div>
+    <div class="agents-grid reveal">
+      <div class="agent-cell header"><span class="agent-type">Task Agents</span></div>
+      <div class="agent-cell header thinking"><span class="agent-type">Thinking Agents</span></div>
+
+      <div class="agent-cell"><div class="agent-row-label">Purpose</div><div class="agent-value">Execute workflows</div></div>
+      <div class="agent-cell thinking"><div class="agent-row-label">Purpose</div><div class="agent-value">Reason through problems</div></div>
+
+      <div class="agent-cell"><div class="agent-row-label">Approach</div><div class="agent-value">Follow procedures</div></div>
+      <div class="agent-cell thinking"><div class="agent-row-label">Approach</div><div class="agent-value">Apply methodology</div></div>
+
+      <div class="agent-cell"><div class="agent-row-label">Structure</div><div class="agent-value">Constrains with rules</div></div>
+      <div class="agent-cell thinking"><div class="agent-row-label">Structure</div><div class="agent-value">Liberates with scaffolding</div></div>
+
+      <div class="agent-cell"><div class="agent-row-label">Human role</div><div class="agent-value">Delegates</div></div>
+      <div class="agent-cell thinking"><div class="agent-row-label">Human role</div><div class="agent-value">Steers</div></div>
+    </div>
+    <p class="agents-footer reveal">The Helix Pattern is for when you need <strong>augmentation, not automation.</strong></p>
+  </div>
+</section>
+
+<!-- WHO -->
+<section>
+  <div class="who">
+    <div class="who-inner">
+      <div class="who-left reveal">
+        <p class="section-label">Who This Is For</p>
+        <h2 class="who-heading">You have expertise.<br>Not just knowledge.</h2>
+      </div>
+      <div class="who-right reveal">
+        <div class="who-body">
+          <p>Anyone can look things up. Anyone can generate text.</p>
+          <p>You have something different. A <strong>way of working</strong>.</p>
+          <p>A methodology developed over years. Ways of seeing that others miss. A progression through complexity that gets results.</p>
+        </div>
+        <ul class="who-list">
+          <li>Strategists who see patterns others don't</li>
+          <li>Designers who know how to frame problems</li>
+          <li>Engineers with methods that work</li>
+          <li>Consultants with frameworks that deliver</li>
+          <li>Leaders who've learned to think through hard decisions</li>
+        </ul>
+        <div class="value-statement">
+          Your methodology is valuable.<br>Your Trinity makes it scalable.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section>
+  <div class="process">
+    <div class="process-header reveal">
+      <p class="section-label">What We Build Together</p>
+      <h2 class="process-heading">From expertise to<br>your Trinity.</h2>
+      <p class="process-sub">We work with select practitioners to encode their methodology into a cognitive partner — their Trinity.</p>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-n">01</div>
+        <div class="step-content">
+          <div class="step-title">Surface your methodology</div>
+          <div class="step-body">The tacit stuff you've never fully articulated. How you actually think — not the official version.</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">02</div>
+        <div class="step-content">
+          <div class="step-title">Define your lenses</div>
+          <div class="step-body">The different ways you see problems. Expert judgment is rarely one-dimensional.</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">03</div>
+        <div class="step-content">
+          <div class="step-title">Map your progression</div>
+          <div class="step-body">How you move through complexity. The sequence that gets results.</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">04</div>
+        <div class="step-content">
+          <div class="step-title">Encode as scaffolding</div>
+          <div class="step-body">Structure AI can reason through — not instructions to follow. The cognitive upload.</div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n">05</div>
+        <div class="step-content">
+          <div class="step-title">Activate your Trinity</div>
+          <div class="step-body">AI that thinks with you. Applies your methodology to novel problems. Augments your judgment — doesn't replace it. You're the pilot. This is your helicopter program.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section>
+  <div class="founder">
+    <div class="founder-inner">
+      <p class="section-label reveal">From the Founder</p>
+      <div class="founder-body reveal">
+        <p>I built this because I needed it.</p>
+        <p>As a strategy consultant, I had frameworks — ways of seeing, progressions through complexity — that I couldn't just "prompt" into AI.</p>
+        <p>So I encoded them differently. Not as instructions. As scaffolding.</p>
+      </div>
+      <blockquote class="founder-pull reveal">
+        What emerged surprised me. AI wasn't following my methodology. It was reasoning through it.
+      </blockquote>
+      <div class="founder-body reveal">
+        <p>Applying it to new problems. Thinking with me. Reaching insights neither of us would reach alone.</p>
+        <p>I called the implementation <strong>Helix Engine</strong>. The underlying pattern — <strong>The Helix Pattern</strong> — is how anyone can do this.</p>
+        <p>Your expertise. Your methodology. <strong>Your Trinity.</strong></p>
+      </div>
+      <div class="founder-sig reveal">
+        <div class="founder-avatar">S</div>
+        <div>
+          <div class="founder-name">Suhit Anantula</div>
+          <div class="founder-role">Founder, The Helix Lab</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="access">
+  <div class="cta-section">
+    <div class="cta-glow"></div>
+    <p class="cta-eyebrow reveal">We Build Your Trinity</p>
+    <h2 class="cta-heading reveal">Your methodology.<br>Your thinking partner.</h2>
+    <p class="cta-sub reveal">If you have methodology worth encoding — expertise that shapes how you work, not just what you know — we want to hear from you.</p>
+
+    <!-- Form placeholder - built dynamically from config.js -->
+    <div id="form-container" class="reveal"></div>
+
+    <p class="cta-note reveal">We'll be in touch if there's a fit.</p>
+    <p id="success-message" class="cta-success"></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">The Helix Pattern · The Helix Lab</div>
+  <div class="footer-right">
+    <a href="https://suhitanantula.com">suhitanantula.com</a>
+    &nbsp;·&nbsp; © 2026 The Helix Lab
+  </div>
+</footer>
+
+<!-- Load config first, then build form -->
+<script src="config.js"></script>
+<script>
+// ══════════════════════════════════════════════════════════════════
+// FORM BUILDER - Reads from FORM_CONFIG in config.js
+// ══════════════════════════════════════════════════════════════════
+
+function buildForm() {
+  const container = document.getElementById('form-container');
+  const form = document.createElement('form');
+  form.id = 'access-form';
+  form.className = 'cta-form';
+  form.action = FORM_CONFIG.endpoint;
+  form.method = 'POST';
+
+  const fields = FORM_CONFIG.fields;
+  let i = 0;
+
+  // First row: name + email side by side
+  if (fields.length >= 2 && fields[0].type !== 'textarea' && fields[1].type !== 'textarea') {
+    const row = document.createElement('div');
+    row.className = 'form-row';
+    row.appendChild(createField(fields[0]));
+    row.appendChild(createField(fields[1]));
+    form.appendChild(row);
+    i = 2;
+  }
+
+  // Remaining fields full width
+  for (; i < fields.length; i++) {
+    const fieldWrapper = createField(fields[i]);
+    fieldWrapper.classList.add('full');
+    form.appendChild(fieldWrapper);
+  }
+
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'cta-submit';
+  submit.textContent = FORM_CONFIG.submitText;
+  form.appendChild(submit);
+
+  container.appendChild(form);
+  form.addEventListener('submit', handleFormSubmit);
+}
+
+function createField(field) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'form-field';
+
+  const label = document.createElement('label');
+  label.className = 'form-label';
+  label.textContent = field.label;
+  wrapper.appendChild(label);
+
+  let input;
+  if (field.type === 'textarea') {
+    input = document.createElement('textarea');
+    input.className = 'cta-textarea';
+  } else {
+    input = document.createElement('input');
+    input.type = field.type;
+    input.className = 'cta-input';
+  }
+
+  input.name = field.name;
+  input.placeholder = field.placeholder || '';
+  if (field.required) input.required = true;
+
+  wrapper.appendChild(input);
+  return wrapper;
+}
+
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('.cta-submit');
+  const successMsg = document.getElementById('success-message');
+  const originalText = btn.textContent;
+
+  btn.textContent = FORM_CONFIG.submittingText;
+  btn.disabled = true;
+
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      form.style.display = 'none';
+      successMsg.textContent = FORM_CONFIG.successMessage;
+      successMsg.style.display = 'block';
+    } else {
+      btn.textContent = FORM_CONFIG.errorMessage;
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = originalText; }, 2000);
+    }
+  } catch (error) {
+    btn.textContent = FORM_CONFIG.errorMessage;
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = originalText; }, 2000);
+  }
+}
+
+buildForm();
+
+// ── CANVAS ANIMATION ──────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let particles = [];
+const PARTICLE_COUNT = 60;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      alpha: Math.random() * 0.5 + 0.1,
+    });
+  }
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        const alpha = (1 - dist / 120) * 0.15;
+        ctx.strokeStyle = `rgba(0,194,168,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw particles
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,194,168,${p.alpha})`;
+    ctx.fill();
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+  });
+
+  requestAnimationFrame(drawParticles);
+}
+
+resize();
+initParticles();
+drawParticles();
+window.addEventListener('resize', () => { resize(); initParticles(); });
+
+// ── NAV SCROLL ──────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── REVEAL ON SCROLL ────────────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+reveals.forEach(el => observer.observe(el));
+
+</script>
+</body>
+</html>
